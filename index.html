@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <title>Document</title>
+
+    <style>
+        body {
+            --header-height: 8rem;
+            --footer-height: 8rem;
+            --footer-minimal-height: 3rem;
+        }
+
+        body,
+        body * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: orange;
+            height: var(--header-height);
+            max-height: var(--header-height);
+        }
+
+        header .header-top-bar,
+        header .header-bottom-bar {
+            position: relative;
+            background-color: green;
+            visibility: hidden;
+            height: var(--header-height);
+            z-index: -1;
+        }
+
+        header>.main-nav-container {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            display: grid;
+            align-items: center;
+            height: var(--header-height);
+            max-height: 100%;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .main-nav-container .main-nav-content {
+            width: 100%;
+            display: grid;
+            grid-template-columns: auto auto;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .main-nav-content .main-nav-brand {
+            font-size: 2rem;
+        }
+
+        .main-nav-content .main-nav-item-list {
+            display: none;
+        }
+
+        header>.main-nav-container.minimal {
+            display: grid;
+            align-items: center;
+            overflow: hidden;
+            background-color: tomato;
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: var(--footer-minimal-height);
+            transition: all 0.3s ease;
+        }
+
+        main {
+            padding-block: 2rem;
+        }
+
+        footer {
+            background-color: orange;
+            height: var(--footer-height);
+            max-height: var(--footer-height);
+        }
+
+        footer>section {
+            display: grid;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* components CSS */
+        .card-list {
+            display: grid;
+            grid-row-gap: 1rem;
+        }
+
+        .card {
+            min-height: 65vh;
+            background-color: aliceblue;
+            border: 1px solid orange;
+            border-radius: 4px;
+            padding: 1rem;
+            display: grid;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media screen and (min-width: 500px) {
+            body {
+                --header-height: 8rem;
+                --footer-height: 8rem;
+                --footer-minimal-height: 3rem;
+            }
+
+            .container {
+                max-width: 700px;
+            }
+
+            .main-nav-container .mobile-menu-toggle-btn {
+                display: none;
+            }
+
+            .main-nav-container .main-nav-content {
+                grid-template-columns: auto 1fr;
+            }
+
+            .main-nav-content .main-nav-item-list {
+                display: flex;
+                grid-column-gap: 2em;
+                justify-content: flex-end;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="header-top-bar" aria-hidden="true"> Bottom bar </div>
+        <nav class="main-nav-container" aria-label="main navigation">
+            <div class="main-nav-content container">
+                <span class="main-nav-brand">Site logo</span>
+                <ul class="main-nav-item-list">
+                    <li> <a href="#">Nav item 1</a> </li>
+                    <li> <a href="#">Nav item 2</a> </li>
+                    <li> <a href="#">Nav item 3</a> </li>
+                    <li> <a href="#">Nav item 4</a> </li>
+                </ul>
+                <button class="mobile-menu-toggle-btn" type="button"> Open menu </button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="container">
+            <h1> Title goes here </h1>
+            <ul class="card-list">
+                <li class="card"> <a href="#">Card item 1</a> </li>
+                <li class="card"> <a href="#">Card item 2</a> </li>
+                <li class="card"> <a href="#">Card item 3</a> </li>
+                <li class="card"> <a href="#">Card item 4</a> </li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <section class="container">
+            <h2> Footer here </h2>
+        </section>
+    </footer>
+
+    <script>
+        let navCallback = function (entries) {
+            entries.forEach(function (entry) {
+                let mainHeaderElem = document.querySelector("#header .main-nav-container");
+                if (!entry.isIntersecting) {
+                    mainHeaderElem.classList.add("minimal");
+                } else {
+                    mainHeaderElem.classList.remove("minimal");
+                }
+            });
+        };
+
+        document.addEventListener("DOMContentLoaded", function (e) {
+            let headerTitleElem = document.querySelector("#header .header-top-bar");
+            let options = {};
+
+            let obs = new IntersectionObserver(navCallback, options);
+            obs.observe(headerTitleElem);
+        });
+    </script>
+</body>
+
+</html>
